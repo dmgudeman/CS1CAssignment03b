@@ -8,7 +8,7 @@ import java.util.*;
 //------------------------------------------------------
 public class Foothill
 {
-   final static int MAT_SIZE = 100000;//
+   final static int MAT_SIZE = 99000;//
 
    // ------- main --------------
    public static void main(String[] args) throws Exception
@@ -27,14 +27,14 @@ public class Foothill
          mat.set(k, 4, k * -10.);
       }
 
-      mat.showSubsquare(0, 12);
+      mat.showSubSquare(0, 12);
 
       SparseMat<Double> mat2 //
          = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.); //
 
       mat2.set(99995, 99995, 55.);
 
-      mat2.showSubsquare(99989, 10);
+      mat2.showSubSquare(99989, 10);
 
       System.out.println("rowSize = " + mat.rowSize);
 

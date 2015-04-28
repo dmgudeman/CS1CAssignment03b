@@ -39,26 +39,27 @@ public class SparseMat<E extends Comparable> implements Cloneable
 
    protected E get(int row, int col)
    {
-      MatNode node;
-
-      if (!valid(col, row))
+      if (!valid(row, col))
          throw new IndexOutOfBoundsException();
 
-      ListIterator<MatNode> listIter = rows.get(row).listIterator();
-      while (listIter.hasNext())
+      ListIterator<MatNode> iter;
+      for (iter =
+            (ListIterator<MatNode>)rows.get(row).listIterator();
+            iter.hasNext() ;
+            )
       {
-         node = listIter.next();
+         
 
-         if (node.col == col)
+         if (iter.next().col == col)
          {
-            return node.data;
+           return iter.previous().data;
          }
       }
       return defaultVal;
    }
    protected boolean valid(int row, int col)
    {
-      if (row>= 0 && col  >= 0 && row < rowSize && col >= colSize)
+      if (row>= 0 && col  >= 0 && row < rowSize && col < colSize)
          return true;
       return false;
    }
@@ -67,35 +68,29 @@ public class SparseMat<E extends Comparable> implements Cloneable
    {
       if (!valid(col, row))
          return false;
-      
+
       MatNode matNode = new MatNode(col, x);
 
       ListIterator<MatNode> iterS;
 
-     for (iterS = (ListIterator<MatNode>)rows.get(row).listIterator() ;
-           iterS.hasNext();)
-    
+      for (iterS = (ListIterator<MatNode>) rows.get(row).listIterator(); iterS
+            .hasNext();)
+      {
          // check to see if there is an existent node
          if (iterS.next().col == col)
          {
             // removes node if defaultVal
             if (x.equals(defaultVal))
-            {
                iterS.remove();
-               return true;
-            }
-            
-            iterS.set(matNode);
+            else
+               iterS.previous().data = x;
             return true;
          }
+      }
+      if (!x.equals(defaultVal))
+         rows.get(row).add(new MatNode(col, x));
+      return true;
 
-//         if (iterS.next().col > c)
-//         {
-            iterS.previous();
-            iterS.add(matNode);
-            return true;
-//         }       
-//      return true;
    }
 
    protected void clear()
@@ -120,9 +115,11 @@ public class SparseMat<E extends Comparable> implements Cloneable
       for (row = start; row < start + size; row++)
       {
          for (col = start; col < start + size; col++)
-            System.out.println( String.format("%5.1f",
-                  (Double)get(row, col)) + "\t");
+            System.out.print( String.format("%5.1f",
+                  (Double)get(row, col)) + "  ");
+         System.out.println();
       }
+      System.out.println();
    }
   
    
