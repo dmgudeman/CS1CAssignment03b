@@ -4,16 +4,22 @@
 // client -----------------------------------------------------
 import cs_1c.*;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 //------------------------------------------------------
 public class Foothill
 {
-   final static int MAT_SIZE = 200;//
+   final static int MAT_SIZE = 5;//
 
    // ------- main --------------
    public static void main(String[] args) throws Exception
    {
+      long startTime, stopTime;
+      double smallPercent;
+      NumberFormat tidy = NumberFormat.getInstance(Locale.US);
+      tidy.setMaximumFractionDigits(4);
+
       // 100000 x 100000 filled with 0
       int k; //
       SparseMat<Double> matA //
@@ -70,8 +76,17 @@ public class Foothill
       matA.showSubSquare(0,MAT_SIZE);
       matB = (SparseMatWMult) matB.transposeMat(matB);
       matB.showSubSquare(0, MAT_SIZE);
+     
+      
+      startTime = System.nanoTime();
+     
+      stopTime = System.nanoTime();
+
       SparseMatWMult .matMult( matA, matB, 
-             matC);
+            matC);
+
+      System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
+            + tidy.format((stopTime - startTime) / 1e9) + " seconds.");
       
 //      SparseMat<Double> mat2 //
 //         = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.); //
