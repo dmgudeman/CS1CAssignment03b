@@ -74,4 +74,18 @@ public class SparseMatWMult extends SparseMat<Double>
       super.showSubSquare(start, size, title);
 
    }
+   public static SparseMatWMult populateMat(SparseMatWMult mat, 
+         double smallPercent)
+   { 
+      for (int k = 0; k < mat.colSize; k++)
+         for (int j = 0; j < mat.colSize; j++)
+         {
+            double d = Math.random();
+            if (d < smallPercent)
+               mat.set(k, j, d);  
+            else
+               mat.set(k, j, 0.0); ;
+         }
+      return mat;
+   }
 }

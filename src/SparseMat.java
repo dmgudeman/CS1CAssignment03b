@@ -99,6 +99,7 @@ public class SparseMat<E extends Comparable> implements Cloneable
          iterR.next().clear();
       }
    }
+   
 
    public void showSubSquare(int start, int size, String title) 
    {

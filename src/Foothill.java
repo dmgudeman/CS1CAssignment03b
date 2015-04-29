@@ -17,68 +17,18 @@ public class Foothill
       long startTime, stopTime;
       NumberFormat tidy = NumberFormat.getInstance(Locale.US);
       tidy.setMaximumFractionDigits(4);
-
+     
       SparseMatWMult matA 
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); 
       SparseMatWMult matB
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
       SparseMatWMult matC
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
-      
-      // test mutators
+       
+      SparseMatWMult.populateMat((SparseMatWMult) matA, smallPercent);
+      SparseMatWMult.populateMat((SparseMatWMult) matB, smallPercent);
 
-//      for (k = 0; k < 5; k++)
-//      {
-//         matA.set(0, k, k * 1.0 +1.0);
-//         matA.set(1, k, -(k * 1.0 +1.0));
-//         matA.set(2, k, (k%2 +k%2 +1.0));
-//         matA.set(3, k, k%2 + 0.);
-//         matA.set(4, k, -1.);
-//      }
-      
-      populateMat((SparseMatWMult) matA);
-      populateMat((SparseMatWMult) matB);
-      
-
-      matB.set(0,  0, 2.0);
-      matA.set(0, 0, 1.);
-      
-      matB.set(2,  2, 3.0);
-      matA.set(2, 2, -1.);
-      
-//      matB.set(0,  1, 1.);
-//      matB.set(0,  2, 5.);
-//      matB.set(0,  3, 00.);
-//      matB.set(0,  4, 2.);
-//
-//      matB.set(1,  0, 1.0);
-//      matB.set(1,  1, 4.);
-//      matB.set(1,  2, 3.);
-//      matB.set(1,  3, 2.);
-//      matB.set(1,  4, 7.);
-//
-//      matB.set(2,  0, 4.0);
-//      matB.set(2,  1, 4.);
-//      matB.set(2,  2, 4.);
-//      matB.set(2,  3, 4.);
-//      matB.set(2,  4, 4.);
-//
-//      matB.set(3,  0, 7.0);
-//      matB.set(3,  1, 1.);
-//      matB.set(3,  2, -1.);
-//      matB.set(3,  3, -1.);
-//      matB.set(3,  4, -1.);
-//      
-//      matB.set(4,  0, 0.0);
-//      matB.set(4,  1, 0.0);
-//      matB.set(4,  2, 8.);
-//      matB.set(4,  3, -1.);
-//      matB.set(4,  4, -6.);
-      
-
-//      matA.showSubSquare(0, 5, "A");
-        matB = (SparseMatWMult) matB.transposeMat(matB);
-//      matB.showSubSquare(0, 5, "B after transformation");
+      matB = (SparseMatWMult) matB.transposeMat(matB);
            
       startTime = System.nanoTime();
       SparseMatWMult .matMult( matA, matB, 
@@ -86,11 +36,12 @@ public class Foothill
      
       stopTime = System.nanoTime();
 
-//      matC.showSubSquare(0, 5, "C (answer): ");    
-
-      System.out.println("\nSparseness Value: " + 100 * smallPercent + "%\t   Size: " + MAT_SIZE + " X " + MAT_SIZE +  "\t   Mat. Mult. Elapsed Time: "
+      System.out.println("\nSparseness Value: " + 100 * smallPercent + "%\t  "
+            + " Size: " + MAT_SIZE + " X " + MAT_SIZE 
+            + "\t   Mat. Mult. Elapsed Time: "
             + tidy.format((stopTime - startTime) / 1e9) + " seconds");
-
+     
+      //--------------testing-----------------------------
       
       System.out.println("Test SparseMat constructor");
       try
@@ -102,19 +53,75 @@ public class Foothill
       {
          System.out.println("oops - bad arg in SparseMat constructor");
       }
-   }
-     
-   public static SparseMatWMult populateMat(SparseMatWMult mat)
-   { 
-      for (int k = 0; k < mat.colSize; k++)
-         for (int j = 0; j < mat.colSize; j++)
-         {
-            double d = Math.random();
-            if (d < smallPercent)
-               mat.set(k, j, d);  
-            else
-               mat.set(k, j, 0.0); ;
-         }
-      return mat;
-   }
+
+      SparseMatWMult matTest1
+         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); 
+      SparseMatWMult matTest2
+         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); 
+      SparseMatWMult matTest3
+         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); 
+      
+      // test mutators
+      for (int k = 0; k < 5; k++)
+      {
+         matTest1.set(0, k, k * 1.0 +1.0);
+         matTest1.set(1, k, -(k * 1.0 +1.0));
+         matTest1.set(2, k, (k%2 +k%2 +1.0));
+         matTest1.set(3, k, k%2 + 0.);
+         matTest1.set(4, k, -1.);
+      }
+      // test accessors and exceptions
+      System.out.println("\nTest get()");
+      try
+      {
+         System.out.println( matTest1.get(0,0));
+         System.out.println( matTest1.get(0,1));
+         System.out.println( matTest1.get(0,2));
+         
+         // should throw an exception
+         System.out.println( matTest1.get(-4,7));
+      }
+      catch( IndexOutOfBoundsException e)
+      {
+         System.out.println("oops - bounds in get()");
+      } 
+      
+      matTest2.set(0, 0, 2.);
+      matTest2.set(0, 1, 1.);
+      matTest2.set(0, 2, 5.);
+      matTest2.set(0, 3, 0.);
+      matTest2.set(0, 4, 2.);
+
+      matTest2.set(1, 0, 1.0);
+      matTest2.set(1, 1, 4.);
+      matTest2.set(1, 2, 3.);
+      matTest2.set(1, 3, 2.);
+      matTest2.set(1, 4, 7.);
+
+      matTest2.set(2, 0, 4.0);
+      matTest2.set(2, 1, 4.);
+      matTest2.set(2, 2, 4.);
+      matTest2.set(2, 3, 4.);
+      matTest2.set(2, 4, 4.);
+
+      matTest2.set(3, 0, 7.0);
+      matTest2.set(3, 1,  1.);
+      matTest2.set(3, 2, -1.);
+      matTest2.set(3, 3, -1.);
+      matTest2.set(3, 4, -1.);
+      
+      matTest2.set(4, 0, 0.0);
+      matTest2.set(4, 1,  0.);
+      matTest2.set(4, 2,  8.);
+      matTest2.set(4, 3, -1.);
+      matTest2.set(4, 4, -6.);
+           
+      matTest1.showSubSquare(0, 5, "matTest1");
+      matTest2.showSubSquare(0, 5, "matTest2");
+      matTest2 = (SparseMatWMult) matTest2.transposeMat(matTest2);
+      matTest2.showSubSquare(0, 5, "matTest2 after transformation");
+      SparseMatWMult .matMult( matTest1, matTest2, 
+            matTest3);
+      matTest3.showSubSquare(0, 5, "ANSWER: matTest3 after multiplication");
+   }  
 }
