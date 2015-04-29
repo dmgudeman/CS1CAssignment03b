@@ -104,14 +104,15 @@ public class SparseMat<E extends Comparable> implements Cloneable
    }
 
 
-   public void showSubSquare(int start, int size) 
+   public void showSubSquare(int start, int size, String title) 
    {
       int row, col;
       
-      if (start < 0 || size <0
+      if (start < 0 || size < 0
             || start + size > rowSize
             || start + size > colSize)
          return;
+      System.out.println("This is matrix: " + title + "\n");
       for (row = start; row < start + size; row++)
       {
          for (col = start; col < start + size; col++)

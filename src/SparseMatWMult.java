@@ -58,7 +58,7 @@ public class SparseMatWMult extends SparseMat<Double>
 //                int indexB = iterB.nextIndex();
                 if (tempA.col == tempB.col) 
                 {
-                                        
+//                                System.out.println("x:" + x +"i: " + i);        
                                 product = tempA.data * tempB.data;
                               sum = sum + product;
                 
@@ -66,10 +66,18 @@ public class SparseMatWMult extends SparseMat<Double>
                }
                         
             }  
-            System.out.print(sum + "\t");   
+           matC.set(x, i, sum);
+           
+//            System.out.print(sum + "\t");   
          }
-         System.out.println("\n");
+//         System.out.println("\n");
       }
       return matC;
+   }
+
+   public void showSubSquare(int start, int size, String title)
+   {
+      super.showSubSquare(start, size, title);
+      
    }
 }
