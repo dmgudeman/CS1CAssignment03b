@@ -2,32 +2,28 @@
 // Instructor Solution Featuring clone()
 
 // client -----------------------------------------------------
-import cs_1c.*;
-
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Locale;
 
 //------------------------------------------------------
 public class Foothill
 {
-   final static int MAT_SIZE = 200;//
+   final static int MAT_SIZE = 100;
+   final static double smallPercent = 0.01;
 
    // ------- main --------------
    public static void main(String[] args) throws Exception
    {
       long startTime, stopTime;
-      double smallPercent;
       NumberFormat tidy = NumberFormat.getInstance(Locale.US);
       tidy.setMaximumFractionDigits(4);
 
-      // 100000 x 100000 filled with 0
-      int k; //
       SparseMatWMult matA //
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); //
       SparseMatWMult matB
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
       SparseMatWMult matC
-      = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
+         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
       
       // test mutators
 
@@ -40,8 +36,8 @@ public class Foothill
 //         matA.set(4, k, -1.);
 //      }
       
-      populateMat((SparseMatWMult) matA, 0.10);
-      populateMat((SparseMatWMult) matB, 0.10);
+      populateMat((SparseMatWMult) matA);
+      populateMat((SparseMatWMult) matB);
       
 
       matB.set(0,  0, 2.0);
@@ -80,9 +76,9 @@ public class Foothill
 //      matB.set(4,  4, -6.);
       
 
-      matA.showSubSquare(0, 5, "Matrix A");
+//      matA.showSubSquare(0, 5, "A");
       matB = (SparseMatWMult) matB.transposeMat(matB);
-      matB.showSubSquare(0, 5, "Matrix B after transformaion");
+//      matB.showSubSquare(0, 5, "B after transformaion");
      
       
       startTime = System.nanoTime();
@@ -91,30 +87,22 @@ public class Foothill
      
       stopTime = System.nanoTime();
 
-      matC.showSubSquare(0, 5, "Matrix C (answer): ");    
+//      matC.showSubSquare(0, 5, "C (answer): ");    
 
-      System.out.println("\nSize = " + MAT_SIZE + " Mat. Mult. Elapsed Time: "
-            + tidy.format((stopTime - startTime) / 1e9) + " seconds.");
-      
-//      SparseMat<Double> mat2 //
-//         = new SparseMat<Double>(MAT_SIZE, MAT_SIZE, 0.); //
-//
-//      mat2.set(99995, 99995, 55.);
-//
-//      mat2.showSubSquare(99989, 10);
+      System.out.println("\nSparseness Value: " + 100 * smallPercent + "%\t   Size: " + MAT_SIZE + " X " + MAT_SIZE +  "\t   Mat. Mult. Elapsed Time: "
+            + tidy.format((stopTime - startTime) / 1e9) + " seconds");
 
-      System.out.println("rowSize = " + matB.rowSize);
 
    }
    
    
-   public static SparseMatWMult populateMat(SparseMatWMult mat, Double percent)
+   public static SparseMatWMult populateMat(SparseMatWMult mat)
    { 
       for (int k = 0; k < mat.colSize; k++)
          for (int j = 0; j < mat.colSize; j++)
          {
             double d = Math.random();
-            if (d < percent)
+            if (d < smallPercent)
                mat.set(k, j, d);  
             else
                mat.set(k, j, 0.0); ;

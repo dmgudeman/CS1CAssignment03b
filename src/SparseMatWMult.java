@@ -2,32 +2,35 @@ import java.util.ListIterator;
 
 public class SparseMatWMult extends SparseMat<Double>
 {
-
    public SparseMatWMult(int rowSize, int colSize, Double defaultVal)
    {
       super(rowSize, colSize, defaultVal);
 
    }
-
-   public SparseMat<Double> transposeMat(SparseMatWMult primeMat)
+   // This method transposes the the colums and rows in the second
+   // matrix. This puts the columns on the array list and sets it
+   // up for the multiplication algorithm
+   public SparseMat<Double> transposeMat(SparseMatWMult secondMat)
          throws CloneNotSupportedException
    {
-      SparseMatWMult matTemp = new SparseMatWMult(primeMat.rowSize,
-            primeMat.colSize, 0.);
-      for (int r = 0; r < primeMat.rowSize; r++)
+      SparseMatWMult matTemp = new SparseMatWMult(secondMat.rowSize,
+            secondMat.colSize, 0.);
+      for (int r = 0; r < secondMat.rowSize; r++)
       {
-         for (int c = 0; c < primeMat.colSize; c++)
+         for (int c = 0; c < secondMat.colSize; c++)
          {
-            Double temp = primeMat.get(r, c).doubleValue();
-
+            Double temp = secondMat.get(r, c).doubleValue();
             matTemp.set(c, r, temp);
          }
       }
-      primeMat = (SparseMatWMult) matTemp.clone();
+      secondMat = (SparseMatWMult) matTemp.clone();
 
-      return primeMat;
+      return secondMat;
    }
-
+   // This algorithm multiplies by looping exhaustively through
+   // the arraylists of both matrices. This allows the respective
+   // linkedLists to be compared and multiplied. Only works after
+   // the second matrix has been prepared with transposition
    static SparseMat<Double> matMult(SparseMat<Double> matA,
          SparseMat<Double> matB, SparseMat<Double> matC)
    {
@@ -36,41 +39,32 @@ public class SparseMatWMult extends SparseMat<Double>
       {
          throw new IndexOutOfBoundsException();
       }
-
+      // first arrayList loop
       for (int x = 0; x < matA.rowSize; x++)
       {
-        
+         // second arrayList loop
          for (int i = 0; i < matA.rowSize; i++)
          {
             Double sum = 0.0;
             Double product = 0.0;
- 
-//           ListIterator<MatNode> iterA = (ListIterator<MatNode>)matA.rows.get(x).listIterator();
-//            while (iterA.hasNext()) 
-            for (MatNode tempA : matA.rows.get(x)) 
+            // first loop with linkedList iterator
+            for (MatNode tempA : matA.rows.get(x))
             {
-//              int indexA = iterA.nextIndex();
-              
-//              ListIterator<MatNode> iterB = (ListIterator<MatNode>)matB.rows.get(i).listIterator();
-//              while (iterB.hasNext())
-               for (MatNode tempB : matB.rows.get(i)) 
-              {
-//                int indexB = iterB.nextIndex();
-                if (tempA.col == tempB.col) 
-                {
-//                                System.out.println("x:" + x +"i: " + i);        
-                                product = tempA.data * tempB.data;
-                              sum = sum + product;
-                
-                }
+               // second loop for second matrix linkedList
+               for (MatNode tempB : matB.rows.get(i))
+               {
+                  if (tempA.col == tempB.col)
+                  {
+                     // if a match is found, multiply
+                     product = tempA.data * tempB.data;
+                     // add to the sum
+                     sum = sum + product;
+                  }
                }
-                        
-            }  
-           matC.set(x, i, sum);
-           
-//            System.out.print(sum + "\t");   
+            }
+            // set the summation for that cell in matrix C
+            matC.set(x, i, sum);
          }
-//         System.out.println("\n");
       }
       return matC;
    }
@@ -78,6 +72,6 @@ public class SparseMatWMult extends SparseMat<Double>
    public void showSubSquare(int start, int size, String title)
    {
       super.showSubSquare(start, size, title);
-      
+
    }
 }

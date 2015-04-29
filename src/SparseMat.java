@@ -48,8 +48,6 @@ public class SparseMat<E extends Comparable> implements Cloneable
             iter.hasNext() ;
             )
       {
-         
-
          if (iter.next().col == col)
          {
            return iter.previous().data;
@@ -69,7 +67,7 @@ public class SparseMat<E extends Comparable> implements Cloneable
       if (!valid(col, row))
          return false;
 
-      MatNode matNode = new MatNode(col, x);
+//      MatNode matNode = new MatNode(col, x);
 
       ListIterator<MatNode> iterS;
 
@@ -90,7 +88,6 @@ public class SparseMat<E extends Comparable> implements Cloneable
       if (!x.equals(defaultVal))
          rows.get(row).add(new MatNode(col, x));
       return true;
-
    }
 
    protected void clear()
@@ -102,7 +99,6 @@ public class SparseMat<E extends Comparable> implements Cloneable
          iterR.next().clear();
       }
    }
-
 
    public void showSubSquare(int start, int size, String title) 
    {
@@ -121,9 +117,7 @@ public class SparseMat<E extends Comparable> implements Cloneable
          System.out.println();
       }
       System.out.println();
-   }
-  
-   
+   }   
    // protected enables us to safely make col/data public
    protected class MatNode implements Cloneable
    {
