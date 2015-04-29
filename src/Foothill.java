@@ -18,8 +18,8 @@ public class Foothill
       NumberFormat tidy = NumberFormat.getInstance(Locale.US);
       tidy.setMaximumFractionDigits(4);
 
-      SparseMatWMult matA //
-         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); //
+      SparseMatWMult matA 
+         = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.); 
       SparseMatWMult matB
          = new SparseMatWMult(MAT_SIZE, MAT_SIZE, 0.);
       SparseMatWMult matC
@@ -77,10 +77,9 @@ public class Foothill
       
 
 //      matA.showSubSquare(0, 5, "A");
-      matB = (SparseMatWMult) matB.transposeMat(matB);
-//      matB.showSubSquare(0, 5, "B after transformaion");
-     
-      
+        matB = (SparseMatWMult) matB.transposeMat(matB);
+//      matB.showSubSquare(0, 5, "B after transformation");
+           
       startTime = System.nanoTime();
       SparseMatWMult .matMult( matA, matB, 
             matC);
@@ -92,10 +91,19 @@ public class Foothill
       System.out.println("\nSparseness Value: " + 100 * smallPercent + "%\t   Size: " + MAT_SIZE + " X " + MAT_SIZE +  "\t   Mat. Mult. Elapsed Time: "
             + tidy.format((stopTime - startTime) / 1e9) + " seconds");
 
-
+      
+      System.out.println("Test SparseMat constructor");
+      try
+      {
+         SparseMat<Double> badMat
+            = new SparseMat<Double>(MAT_SIZE, -MAT_SIZE, 0.);
+      }
+      catch(IllegalArgumentException e)
+      {
+         System.out.println("oops - bad arg in SparseMat constructor");
+      }
    }
-   
-   
+     
    public static SparseMatWMult populateMat(SparseMatWMult mat)
    { 
       for (int k = 0; k < mat.colSize; k++)

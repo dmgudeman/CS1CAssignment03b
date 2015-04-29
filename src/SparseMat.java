@@ -143,6 +143,6 @@ public class SparseMat<E extends Comparable> implements Cloneable
          MatNode newObject = (MatNode) super.clone();
          return (Object) newObject;
       }
-   };
+   }
 
 }
