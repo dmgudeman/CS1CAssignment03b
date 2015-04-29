@@ -10,7 +10,7 @@ import java.util.*;
 //------------------------------------------------------
 public class Foothill
 {
-   final static int MAT_SIZE = 5;//
+   final static int MAT_SIZE = 200;//
 
    // ------- main --------------
    public static void main(String[] args) throws Exception

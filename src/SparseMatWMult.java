@@ -1,3 +1,5 @@
+import java.util.ListIterator;
+
 public class SparseMatWMult extends SparseMat<Double>
 {
 
@@ -37,17 +39,34 @@ public class SparseMatWMult extends SparseMat<Double>
 
       for (int x = 0; x < matA.rowSize; x++)
       {
+        
          for (int i = 0; i < matA.rowSize; i++)
          {
             Double sum = 0.0;
-
-            for (int k = 0; k < matB.rowSize; k++)
+            Double product = 0.0;
+ 
+//           ListIterator<MatNode> iterA = (ListIterator<MatNode>)matA.rows.get(x).listIterator();
+//            while (iterA.hasNext()) 
+            for (MatNode tempA : matA.rows.get(x)) 
             {
-               double temp = (matA.get(x, k).doubleValue() * matB.get(i, k)
-                     .doubleValue());
-               sum = sum + temp;
-            }
-            System.out.print(sum + "\t");
+//              int indexA = iterA.nextIndex();
+              
+//              ListIterator<MatNode> iterB = (ListIterator<MatNode>)matB.rows.get(i).listIterator();
+//              while (iterB.hasNext())
+               for (MatNode tempB : matB.rows.get(i)) 
+              {
+//                int indexB = iterB.nextIndex();
+                if (tempA.col == tempB.col) 
+                {
+                                        
+                                product = tempA.data * tempB.data;
+                              sum = sum + product;
+                
+                }
+               }
+                        
+            }  
+            System.out.print(sum + "\t");   
          }
          System.out.println("\n");
       }
